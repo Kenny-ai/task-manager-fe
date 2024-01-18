@@ -4,9 +4,11 @@ import {
   CreateBoardData,
   Task,
   UpdateBoardData,
+  CreateTaskData,
+  UpdateTaskData,
 } from "@/utils/types";
 import { useAxios } from "@/hooks/useAxios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useBoards = () => {
   const queryClient = useQueryClient();
@@ -14,7 +16,6 @@ export const useBoards = () => {
   const { axiosInstance } = useAxios();
 
   const {
-    isLoggedIn,
     boards,
     setBoards,
     currentBoard,
@@ -22,24 +23,14 @@ export const useBoards = () => {
     currentTask,
     setIsAddBoardOpen,
     setIsEditBoardOpen,
+    setIsDeleteBoardOpen,
+    setIsAddTaskOpen,
+    setIsEditTaskOpen,
+    setIsDeleteTaskOpen,
   } = useStoreVars();
 
   const boardId = currentBoard?._id;
   const taskId = currentTask?._id;
-
-  const getBoardsFn = async () => {
-    const res = await axiosInstance.get(`/boards`);
-    setBoards(res.data.data);
-    return res;
-  };
-
-  const getBoards = useQuery({
-    queryKey: ["boards"],
-    queryFn: getBoardsFn,
-    // enabled: false,
-    enabled: isLoggedIn,
-    refetchOnWindowFocus: false,
-  });
 
   const createBoardFn = async (boardData: CreateBoardData) => {
     const res = await axiosInstance.post(`/boards`, boardData);
@@ -50,11 +41,6 @@ export const useBoards = () => {
     mutationKey: ["createBoard"],
     mutationFn: createBoardFn,
     onSuccess: () => {
-      // const { name, phases, tasks, _id } = data.data.data;
-      // console.log(data.data);
-      // queryClient.invalidateQueries({ queryKey: ["boards"] });
-      // setBoards([...boards, { name, tasks, _id, phaseList: phases }]);
-      // console.log({ name, phases, tasks, _id });
       setIsAddBoardOpen(false);
     },
     onSettled: async () => {
@@ -74,17 +60,45 @@ export const useBoards = () => {
     mutationKey: ["updateBoard"],
     mutationFn: updateBoardFn,
     onSuccess: (data) => {
-      // const { name, phases, tasks, _id } = data.data.data;
-      console.log(data.data);
       queryClient.invalidateQueries({ queryKey: ["boards"] });
       setCurrentBoard(data.data.board);
       setIsEditBoardOpen(false);
     },
   });
 
-  const deleteBoard = () => {
-    axiosInstance.delete(`/boards?id=${boardId}`);
+  const deleteBoardFn = async () => {
+    const res = await axiosInstance.delete(`/boards?id=${boardId}`);
+    return res;
   };
+
+  const deleteBoard = useMutation({
+    mutationKey: ["deleteBoard"],
+    mutationFn: deleteBoardFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["boards"] });
+      setCurrentBoard(undefined);
+      setIsDeleteBoardOpen(false);
+    },
+  });
+
+  const createTaskFn = async (taskData: CreateTaskData) => {
+    const res = await axiosInstance.post(
+      `/boards/tasks?id=${boardId}`,
+      taskData
+    );
+    return res;
+  };
+
+  const createTask = useMutation({
+    mutationKey: ["createTask"],
+    mutationFn: createTaskFn,
+    onSuccess: () => {
+      setIsAddTaskOpen(false);
+    },
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({ queryKey: ["boards"] });
+    },
+  });
 
   const createLocalTask = (task: Task) => {
     const array = boards.map((board) => {
@@ -100,6 +114,25 @@ export const useBoards = () => {
     });
     return array;
   };
+
+  const updateTaskFn = async (taskData: UpdateTaskData) => {
+    const res = await axiosInstance.put(
+      `/boards/tasks?boardId=${boardId}&taskId=${taskId}`,
+      taskData
+    );
+    return res;
+  };
+
+  const updateTask = useMutation({
+    mutationKey: ["updateTask"],
+    mutationFn: updateTaskFn,
+    onSuccess: () => {
+      setIsEditTaskOpen(false);
+    },
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({ queryKey: ["boards"] });
+    },
+  });
 
   const updateLocalTask = (update: Task) => {
     const array = boards.map((board) => {
@@ -118,6 +151,22 @@ export const useBoards = () => {
     });
     return array;
   };
+
+  const deleteTaskFn = async () => {
+    const res = await axiosInstance.delete(
+      `/boards/tasks?boardId=${boardId}&taskId=${taskId}`
+    );
+    return res;
+  };
+
+  const deleteTask = useMutation({
+    mutationKey: ["deleteTask"],
+    mutationFn: deleteTaskFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["boards"] });
+      setIsDeleteTaskOpen(false);
+    },
+  });
 
   const deleteLocalTask = () => {
     const array = boards.map((board) => {
@@ -158,8 +207,8 @@ export const useBoards = () => {
         board.tasks?.map((task) => {
           if (task._id === taskId) {
             task.subtasks?.map((subtask) => {
-              if (subtask.id === subtaskId)
-                subtask.completed = !subtask.completed;
+              if (subtask._id === subtaskId)
+                subtask.isCompleted = !subtask.isCompleted;
             });
           }
           return task;
@@ -186,7 +235,7 @@ export const useBoards = () => {
   };
 
   const numberOfCompleted = (task: Task) =>
-    task.subtasks?.filter((subtask) => subtask.completed).length;
+    task.subtasks?.filter((subtask) => subtask.isCompleted).length;
 
   const dragResolver = ({
     id,
@@ -220,13 +269,15 @@ export const useBoards = () => {
   };
 
   return {
-    getBoards,
     createBoard,
     updateBoard,
     deleteBoard,
     createLocalBoard,
     updateLocalBoard,
     deleteLocalBoard,
+    createTask,
+    updateTask,
+    deleteTask,
     createLocalTask,
     updateLocalTask,
     deleteLocalTask,

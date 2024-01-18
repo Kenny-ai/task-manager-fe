@@ -70,10 +70,10 @@ const TileDetails = forwardRef<Ref>(function TileDetails(props, ref) {
           {subtasks!.length !== 0 ? (
             subtasks?.map((subtask) => (
               <Checkbox
-                key={subtask.id}
-                id={subtask.id}
+                key={subtask._id}
+                id={subtask._id}
                 title={subtask.title}
-                completed={subtask.completed}
+                isCompleted={subtask.isCompleted}
               />
             ))
           ) : (

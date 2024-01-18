@@ -4,17 +4,17 @@ import React, { useEffect, useState } from "react";
 interface Props {
   id: number;
   title: string;
-  completed: boolean;
+  isCompleted: boolean;
 }
 
-const Checkbox = ({ id, title, completed }: Props) => {
+const Checkbox = ({ id, title, isCompleted }: Props) => {
   const { toggleSubtaskCompleted } = useBoards();
 
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    setChecked(completed);
-  }, [completed, setChecked]);
+    setChecked(isCompleted);
+  }, [isCompleted, setChecked]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked);

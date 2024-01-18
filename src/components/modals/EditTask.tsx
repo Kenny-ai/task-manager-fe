@@ -7,13 +7,15 @@ import { useBoards } from "@/hooks/useBoards";
 import Dropdown from "../Dropdown";
 import { useStoreVars } from "@/context/states";
 import Icon from "../Icon";
+import Loading from "../Loading";
 
 type Ref = HTMLDivElement;
 
 const EditTask = forwardRef<Ref>(function AddTask(props, ref) {
-  const { currentTask, setBoards, setIsEditTaskOpen } = useStoreVars();
+  const { isLoggedIn, currentTask, setBoards, setIsEditTaskOpen } =
+    useStoreVars();
 
-  const { updateLocalTask } = useBoards();
+  const { updateLocalTask, updateTask } = useBoards();
 
   const [title, setTitle] = useState(currentTask.title);
 
@@ -27,14 +29,27 @@ const EditTask = forwardRef<Ref>(function AddTask(props, ref) {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const task = { title, description, subtasks, status };
 
-    const newBoards = updateLocalTask(task);
+    if (isLoggedIn) {
+      const formattedSubtasks = subtasks.map((subtask) => {
+        return { title: subtask.title, isCompleted: subtask.isCompleted };
+      });
 
-    setBoards(newBoards);
+      updateTask.mutate({
+        title,
+        description,
+        subtasks: formattedSubtasks,
+        status,
+      });
+    } else {
+      const task = { title, description, subtasks, status };
 
-    setIsEditTaskOpen(false);
+      const newBoards = updateLocalTask(task);
+
+      setBoards(newBoards);
+
+      setIsEditTaskOpen(false);
+    }
   };
 
   const changeStatus = (str: string) => {
@@ -111,10 +126,10 @@ const EditTask = forwardRef<Ref>(function AddTask(props, ref) {
           </div>
 
           <button
-            className="bg-color-purple w-full hover:bg-color-light-purple duration-300 text-color-white rounded-lg py-2 text-sm font-bold"
+            className="bg-color-purple w-full hover:bg-color-light-purple duration-300 text-color-white rounded-lg py-2 text-sm font-bold grid place-items-center"
             type="submit"
           >
-            Edit Task
+            {updateTask.isLoading ? <Loading /> : `Edit Task`}
           </button>
         </div>
         {/* </ModalLayout> */}

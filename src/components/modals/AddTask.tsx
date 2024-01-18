@@ -7,23 +7,24 @@ import { useBoards } from "@/hooks/useBoards";
 import Dropdown from "../Dropdown";
 import Icon from "../Icon";
 import { useStoreVars } from "@/context/states";
+import { initialSubtask } from "@/utils/constants";
+import Loading from "../Loading";
 
 type Ref = HTMLDivElement;
 
 const AddTask = forwardRef<Ref>(function AddTask(props, ref) {
-  const { currentBoard, setBoards, setIsAddTaskOpen } = useStoreVars();
+  const { isLoggedIn, currentBoard, setBoards, setIsAddTaskOpen } =
+    useStoreVars();
 
-  const { createLocalTask } = useBoards();
+  const { createLocalTask, createTask } = useBoards();
 
   const [title, setTitle] = useState("");
 
   const [description, setDescription] = useState("");
 
-  const [status, setStatus] = useState(currentBoard!.phases[0].title);
+  const [status, setStatus] = useState(currentBoard!.phaseList![0].title);
 
-  const [subtasks, setSubtasks] = useState<SubtaskType[]>([
-    { id: 1, title: "", completed: false },
-  ]);
+  const [subtasks, setSubtasks] = useState<SubtaskType[]>([initialSubtask]);
 
   const changeStatus = (str: string) => {
     setStatus(str);
@@ -31,15 +32,29 @@ const AddTask = forwardRef<Ref>(function AddTask(props, ref) {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const _id = crypto.randomUUID();
+    if (isLoggedIn) {
+      const formattedSubtasks = subtasks.map((subtask) => {
+        return { title: subtask.title, isCompleted: subtask.isCompleted };
+      });
 
-    const task = { _id, title, description, subtasks, status };
+      // console.log({ title, description, subtasks: formattedSubtasks, status });
+      createTask.mutate({
+        title,
+        description,
+        subtasks: formattedSubtasks,
+        status,
+      });
+    } else {
+      const _id = crypto.randomUUID();
 
-    const newBoards = createLocalTask(task);
+      const task = { _id, title, description, subtasks, status };
 
-    setBoards(newBoards);
+      const newBoards = createLocalTask(task);
 
-    setIsAddTaskOpen(false);
+      setBoards(newBoards);
+
+      setIsAddTaskOpen(false);
+    }
   };
 
   const changeSubtasks = (subtasks: SubtaskType[]) => {
@@ -109,10 +124,10 @@ const AddTask = forwardRef<Ref>(function AddTask(props, ref) {
           </div>
 
           <button
-            className="bg-color-purple w-full hover:bg-color-light-purple duration-300 text-color-white rounded-lg py-2 text-sm font-bold"
+            className="bg-color-purple w-full hover:bg-color-light-purple duration-300 text-color-white rounded-lg py-2 text-sm font-bold grid place-items-center"
             type="submit"
           >
-            Create Task
+            {createTask.isLoading ? <Loading /> : `Create Task`}
           </button>
         </div>
         {/* </ModalLayout> */}

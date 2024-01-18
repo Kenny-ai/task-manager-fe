@@ -50,10 +50,10 @@ const Dropdown = ({ status, changeStatus }: Props) => {
       </div>
       {isDropdownOpen && (
         <ul className="text-color-medium-gray text-xs py-2 bg-color-white dark:bg-dark-secondary-bg shadow-[0px_0px_3px_0px_rgba(0,0,0,0.52)] rounded flex flex-col absolute w-[26rem] top-12 max-h-24 overflow-auto">
-          {currentBoard!.phases?.map((phase) => (
+          {currentBoard!.phaseList?.map((phase) => (
             <li
               className=" hover:bg-lighter-purple py-2 w-full pl-4 cursor-pointer select-none border-b border-light-lines dark:border-dark-light-lines"
-              key={currentBoard!.phases?.indexOf(phase)}
+              key={phase._id}
               onClick={() => handleStatusChange(phase.title)}
             >
               {phase.title}

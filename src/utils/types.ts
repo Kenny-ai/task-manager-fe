@@ -13,7 +13,7 @@ export interface RegisterData {
 }
 
 export interface PhaseType {
-  _id: string;
+  _id: number;
   title: string;
 }
 
@@ -21,19 +21,18 @@ export interface PhaseType {
 export interface Board {
   _id?: string;
   name: string;
-  // phases?: PhaseReqType[];
   phaseList?: PhaseType[];
   tasks?: Task[];
 }
 
 export interface SubtaskType {
-  id: number;
+  _id: number;
   title: string;
-  completed: boolean;
+  isCompleted: boolean;
 }
 
 export interface Task {
-  _id: string;
+  _id?: string;
   title: string;
   description?: string;
   subtasks?: SubtaskType[];
@@ -67,7 +66,6 @@ export interface UserState {
   token: string;
   setToken: (userId: string) => void;
 }
-
 export interface ThemeState {
   theme: string;
   setTheme: (userName: string) => void;
@@ -98,9 +96,28 @@ interface PhaseReqType {
   title: string;
 }
 
+interface SubtaskReqType {
+  title: string;
+  isCompleted: boolean;
+}
+
 export interface CreateBoardData {
   name: string;
   phaseList: PhaseReqType[];
+}
+
+export interface CreateTaskData {
+  title: string;
+  description?: string;
+  subtasks?: SubtaskReqType[];
+  status: string;
+}
+
+export interface UpdateTaskData {
+  title: string;
+  description?: string;
+  subtasks?: SubtaskReqType[];
+  status: string;
 }
 
 export interface UpdateBoardData {

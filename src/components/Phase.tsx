@@ -4,7 +4,7 @@ import Icon from "./Icon";
 import { PhaseType } from "@/utils/types";
 
 export interface PhaseProps {
-  id: string;
+  id: number;
   phaseList: PhaseType[];
   changePhaseList: (phaseList: PhaseType[]) => void;
   title: string;

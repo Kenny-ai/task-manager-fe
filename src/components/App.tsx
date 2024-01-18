@@ -1,31 +1,38 @@
 "use client";
 import Logout from "@/components/Logout";
-import { useBoards } from "@/hooks/useBoards";
 import React, { useEffect } from "react";
 import ModalContainer from "@/components/modals/ModalContainer";
 import SidebarContainer from "@/components/SidebarContainer";
 import { useStoreVars } from "@/context/states";
 import Main from "@/components/Main";
 import { useAuth } from "@/hooks/useAuth";
+import { useAxios } from "@/hooks/useAxios";
+import { useQuery } from "@tanstack/react-query";
 
 const App = () => {
   const { logout } = useAuth();
 
-  const { boards, isLoggedIn, currentBoard } = useStoreVars();
+  const { boards, setBoards, isLoggedIn, currentBoard } = useStoreVars();
+  const { axiosInstance } = useAxios();
 
-  const { getBoards } = useBoards();
+  const getBoardsFn = async () => {
+    const res = await axiosInstance.get(`/boards`);
+    setBoards(res.data.data);
+    return res;
+  };
 
-  // getBoards();
-
-  // useEffect(() => {
-  //   if (isLoggedIn) getBoards.refetch();
-  // }, [isLoggedIn]);
+  const {error} = useQuery({
+    queryKey: ["boards"],
+    queryFn: getBoardsFn,
+    enabled: isLoggedIn,
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
     console.log({ isLoggedIn });
   }, [isLoggedIn]);
 
-  if (getBoards.error?.response.status === 403) logout.refetch();
+  if (error?.response.status === 403) logout.refetch();
 
   useEffect(() => {
     console.log({ boards });

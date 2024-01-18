@@ -14,7 +14,7 @@ const Subtask = (props: Props) => {
   const { id, subtasks, changeSubtasks, title } = props;
 
   const deleteSubtask = () => {
-    changeSubtasks(subtasks.filter((subtask) => subtask.id !== id));
+    changeSubtasks(subtasks.filter((subtask) => subtask._id !== id));
   };
 
   const handleSubtaskChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,14 +22,14 @@ const Subtask = (props: Props) => {
 
     changeSubtasks(
       arr.map((i) => {
-        if (i.id === id) i.title = e.target.value;
+        if (i._id === id) i.title = e.target.value;
         return i;
       })
     );
   };
 
   const currentPosition =
-    subtasks.indexOf(subtasks.filter((subtask) => subtask.id === id)[0]) + 1;
+    subtasks.indexOf(subtasks.filter((subtask) => subtask._id === id)[0]) + 1;
 
   return (
     <div className="flex items-center gap-4">

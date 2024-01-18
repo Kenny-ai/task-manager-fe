@@ -1,5 +1,4 @@
 import { useTheme } from "next-themes";
-import Link from "next/link";
 import React from "react";
 import Icon from "./Icon";
 import OpenSidebar from "./OpenSidebar";
@@ -27,9 +26,9 @@ const Sidebar = () => {
       <nav
         className={`${
           isSidebarOpen ? `` : `-ml-72`
-        } w-72 pt-8 h-screen bg-color-white dark:bg-dark-secondary-bg border-r border-light-lines dark:border-dark-light-lines fixed z-10 hidden md:inline-block duration-300 ease-linear`}
+        } w-72 h-screen bg-color-white dark:bg-dark-secondary-bg border-r border-light-lines dark:border-dark-light-lines fixed z-10 hidden md:inline-block duration-300 ease-linear`}
       >
-        <Link href="/">
+        <div className="h-[6.5rem] flex items-center pl-8">
           <Icon
             src={`${
               theme === `light`
@@ -38,9 +37,9 @@ const Sidebar = () => {
             }`}
             alt="kanban-logo"
             priority
-            className="mb-12 ml-8"
+            className=""
           />
-        </Link>
+        </div>
 
         <div className="text-color-medium-gray h-4/6 pr-8 py-4 shadow dark:shadow-md mb-6 overflow-auto border-t border-light-lines dark:border-dark-light-lines">
           <h5 className="text-sm font-bold tracking-widest mb-6 ml-8">
@@ -55,7 +54,7 @@ const Sidebar = () => {
                   currentBoard?._id === board._id
                     ? `bg-color-purple text-color-white`
                     : `hover:text-color-purple hover:bg-light-main-bg`
-                } py-3 flex items-center gap-3 rounded-r-full cursor-pointer pl-8 font-bold mb-2`}
+                } py-3 flex items-center gap-3 rounded-r-3xl cursor-pointer pl-8 font-bold mb-2`}
               >
                 <span>
                   <Icon
@@ -66,7 +65,7 @@ const Sidebar = () => {
                     } board-logo`}
                   />
                 </span>
-                {board.name}
+                <span className="w-full">{board.name}</span>
               </li>
             ))}
             {isLoading ? (

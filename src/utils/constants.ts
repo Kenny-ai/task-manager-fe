@@ -1,14 +1,14 @@
-import { Board, PhaseType, Task } from "./types";
+import { Board, PhaseType, SubtaskType, Task } from "./types";
 
-// export const initialSubtask: SubtaskType = {
-//   id: 0,
-//   title: "",
-//   completed: false,
-// };
+export const initialSubtask: SubtaskType = {
+  _id: 1,
+  title: "",
+  isCompleted: false,
+};
 
 export const initialBoard: Board = {
   name: "",
-  phases: [],
+  phaseList: [],
 }
 
 export const initialPhase: PhaseType = {

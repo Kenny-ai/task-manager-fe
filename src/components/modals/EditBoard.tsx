@@ -36,7 +36,7 @@ const EditBoard = forwardRef<Ref, Props>(function AddBoard(props, ref) {
         return { title: phase.title };
       });
 
-      // updateBoard.mutate({ name, phaseList: phases });
+      updateBoard.mutate({ name, phaseList: phases });
 
       console.log({ name, phases });
     } else {

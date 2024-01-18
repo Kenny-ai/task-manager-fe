@@ -11,11 +11,11 @@ const Subtasks = ({ subtasks, changeSubtasks }: Props) => {
   const lastInputRef = useRef<null | HTMLDivElement>(null);
 
   const addNewSubtask = () => {
-    const lastSubtaskId = subtasks[subtasks.length - 1]?.id || 0;
+    const lastSubtaskId = subtasks[subtasks.length - 1]?._id || 0;
 
     changeSubtasks([
       ...subtasks,
-      { id: lastSubtaskId + 1, title: "", completed: false },
+      { _id: lastSubtaskId + 1, title: "", isCompleted: false },
     ]);
 
     // auto focus on scroll
@@ -31,8 +31,8 @@ const Subtasks = ({ subtasks, changeSubtasks }: Props) => {
           {subtasks.length !== 0 ? (
             subtasks.map((subtask) => (
               <Subtask
-                key={subtask.id}
-                id={subtask.id}
+                key={subtask._id}
+                id={subtask._id}
                 subtasks={subtasks}
                 changeSubtasks={changeSubtasks}
                 title={subtask.title}

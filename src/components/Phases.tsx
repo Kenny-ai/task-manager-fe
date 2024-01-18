@@ -16,7 +16,7 @@ const Phases = ({ phaseList, changePhaseList }: Props) => {
 
     changePhaseList([
       ...phaseList,
-      { _id: (lastPhaseId + 1).toString(), title: "" },
+      { _id: lastPhaseId + 1, title: "" },
     ]);
 
     // auto focus on scroll

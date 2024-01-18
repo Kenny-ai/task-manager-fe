@@ -95,7 +95,6 @@ const AddBoard = forwardRef<Ref>(function AddBoard(props, ref) {
           <button
             className="bg-color-purple w-full hover:bg-color-light-purple duration-300 text-color-white rounded-lg py-2 text-sm font-bold place-items-center grid"
             type="submit"
-            // onClick={onSubmit}
           >
             {createBoard.isLoading ? <Loading /> : `Create Board`}
           </button>

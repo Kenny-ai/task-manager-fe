@@ -1,6 +1,7 @@
 import { useBoards } from "@/hooks/useBoards";
 import { useStoreVars } from "@/context/states";
 import React, { forwardRef } from "react";
+import Loading from "../Loading";
 
 type Ref = HTMLFormElement;
 interface Props {
@@ -10,25 +11,34 @@ interface Props {
 
 const Delete = forwardRef<Ref, Props>(function Delete({ type, ...props }, ref) {
   const {
-    setIsDeleteBoardOpen,
-    setBoards,
-    currentBoard,
-    setIsDeleteTaskOpen,
+    isLoggedIn,
     currentTask,
+    currentBoard,
+    setBoards,
+    setIsDeleteBoardOpen,
+    setIsDeleteTaskOpen,
   } = useStoreVars();
 
-  const { deleteLocalBoard, deleteLocalTask } = useBoards();
-
+  const { deleteLocalBoard, deleteLocalTask, deleteBoard, deleteTask } =
+    useBoards();
+  
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (type === "Board") {
-      deleteLocalBoard();
-      setIsDeleteBoardOpen(false);
+    if (isLoggedIn) {
+      if (type === "Board") {
+        deleteBoard.mutate();
+      } else if (type === "Task") {
+        deleteTask.mutate();
+      }
     } else {
-      const newBoards = deleteLocalTask();
-      setBoards(newBoards);
-      setIsDeleteTaskOpen(false);
+      if (type === "Board") {
+        deleteLocalBoard();
+        setIsDeleteBoardOpen(false);
+      } else {
+        const newBoards = deleteLocalTask();
+        setBoards(newBoards);
+        setIsDeleteTaskOpen(false);
+      }
     }
   };
 
@@ -40,9 +50,12 @@ const Delete = forwardRef<Ref, Props>(function Delete({ type, ...props }, ref) {
         ref={ref}
         onSubmit={onSubmit}
       >
-        <h3 className="text-xl font-bold text-color-red">
-          Delete this {type}?
-        </h3>
+        <div className="flex justify-between items-center">
+          <h3 className="text-xl font-bold text-color-red">
+            Delete this {type}?
+          </h3>
+          {deleteBoard.isLoading || deleteTask.isLoading ? <Loading /> : ``}
+        </div>
         {type === "Board" ? (
           <p className="text-sm text-color-medium-gray leading-6">
             Are you sure you want to delete the ‘{currentBoard!.name}’ {type}?
@@ -59,10 +72,12 @@ const Delete = forwardRef<Ref, Props>(function Delete({ type, ...props }, ref) {
 
         <div className="flex justify-between">
           <button
-            className="bg-color-red hover:bg-color-light-red duration-300 text-color-white rounded-full py-2 text-sm font-bold w-2/5"
+            className="bg-color-red hover:bg-color-light-red duration-300 text-color-white rounded-full py-2 text-sm font-bold w-2/5 grid place-items-center"
             type="submit"
           >
-            Delete
+            {deleteBoard.isLoading || deleteTask.isLoading
+              ? `Deleting...`
+              : `Delete`}
           </button>
           <button
             className="bg-blue-100 hover:bg-blue-200 duration-300 text-color-purple rounded-full py-2 text-sm font-bold w-2/5"
