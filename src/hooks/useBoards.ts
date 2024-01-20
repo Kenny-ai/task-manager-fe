@@ -16,6 +16,7 @@ export const useBoards = () => {
   const { axiosInstance } = useAxios();
 
   const {
+    isLoggedIn,
     boards,
     setBoards,
     currentBoard,
@@ -27,6 +28,7 @@ export const useBoards = () => {
     setIsAddTaskOpen,
     setIsEditTaskOpen,
     setIsDeleteTaskOpen,
+    setIsTileDetailsOpen,
   } = useStoreVars();
 
   const boardId = currentBoard?._id;
@@ -63,6 +65,7 @@ export const useBoards = () => {
       queryClient.invalidateQueries({ queryKey: ["boards"] });
       setCurrentBoard(data.data.board);
       setIsEditBoardOpen(false);
+      console.log(data.data);
     },
   });
 
@@ -128,6 +131,7 @@ export const useBoards = () => {
     mutationFn: updateTaskFn,
     onSuccess: () => {
       setIsEditTaskOpen(false);
+      setIsTileDetailsOpen(false);
     },
     onSettled: async () => {
       return await queryClient.invalidateQueries({ queryKey: ["boards"] });
@@ -202,21 +206,29 @@ export const useBoards = () => {
   };
 
   const toggleSubtaskCompleted = (subtaskId: number) => {
-    const array = boards.map((board) => {
-      if (board._id === boardId) {
-        board.tasks?.map((task) => {
-          if (task._id === taskId) {
-            task.subtasks?.map((subtask) => {
-              if (subtask._id === subtaskId)
-                subtask.isCompleted = !subtask.isCompleted;
-            });
-          }
-          return task;
-        });
-      }
-      return board;
-    });
-    setBoards(array);
+    if (isLoggedIn) {
+      currentTask.subtasks?.map((subtask) => {
+        if (subtask._id === subtaskId)
+          subtask.isCompleted = !subtask.isCompleted;
+      });
+      // console.log(currentTask);
+    } else {
+      const array = boards.map((board) => {
+        if (board._id === boardId) {
+          board.tasks?.map((task) => {
+            if (task._id === taskId) {
+              task.subtasks?.map((subtask) => {
+                if (subtask._id === subtaskId)
+                  subtask.isCompleted = !subtask.isCompleted;
+              });
+            }
+            return task;
+          });
+        }
+        return board;
+      });
+      setBoards(array);
+    }
   };
 
   const changeTaskStatus = (status: string) => {
@@ -259,6 +271,18 @@ export const useBoards = () => {
         return board;
       });
       setBoards(array);
+
+      if (isLoggedIn) {
+        currentBoard!.tasks!.map((task) => {
+          if (task._id === id) {
+            task.status = destination;
+          }
+          return task;
+        });
+
+        updateBoard.mutate(currentBoard!);
+      }
+
       return array;
     }
   };

@@ -8,15 +8,16 @@ import TaskOptions from "./TaskOptions";
 import { ClickAwayListener } from "@mui/material";
 import ModalLayout from "./ModalLayout";
 import { useStoreVars } from "@/context/states";
+import Loading from "../Loading";
 
 type Ref = HTMLDivElement;
 
 const TileDetails = forwardRef<Ref>(function TileDetails(props, ref) {
-  const { currentTask, setIsTileDetailsOpen } = useStoreVars();
+  const { isLoggedIn, currentTask, setIsTileDetailsOpen } = useStoreVars();
 
   const { title, description, subtasks, status } = currentTask;
 
-  const { changeTaskStatus, numberOfCompleted } = useBoards();
+  const { changeTaskStatus, numberOfCompleted, updateTask } = useBoards();
 
   const [isTaskOpsOpen, setIsTaskOpsOpen] = useState(false);
 
@@ -26,7 +27,12 @@ const TileDetails = forwardRef<Ref>(function TileDetails(props, ref) {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsTileDetailsOpen(false);
+    if (isLoggedIn) {
+      // console.log(currentTask);
+      updateTask.mutate(currentTask);
+    } else {
+      setIsTileDetailsOpen(false);
+    }
   };
 
   return (
@@ -90,10 +96,10 @@ const TileDetails = forwardRef<Ref>(function TileDetails(props, ref) {
         </div>
 
         <button
-          className="bg-color-purple w-full hover:bg-color-light-purple duration-300 text-color-white rounded-lg py-2 text-sm font-bold"
+          className="bg-color-purple w-full hover:bg-color-light-purple duration-300 text-color-white rounded-lg py-2 text-sm font-bold grid place-items-center"
           type="submit"
         >
-          Save and Close
+          {updateTask.isLoading ? <Loading /> : `Save and Close`}
         </button>
       </ModalLayout>
     </div>

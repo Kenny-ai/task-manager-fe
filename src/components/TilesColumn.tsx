@@ -12,7 +12,7 @@ interface Props {
 }
 
 const TilesColumn = ({ phase, color }: Props) => {
-  const { isLoggedIn, boards, currentBoard } = useStoreVars();
+  const { boards, currentBoard } = useStoreVars();
 
   const { dragResolver } = useBoards();
 
@@ -53,10 +53,10 @@ const TilesColumn = ({ phase, color }: Props) => {
         {tasks?.length ? (
           tasks?.map((task) => (
             <Tile
-              key={isLoggedIn ? task._id : tasks.indexOf(task)}
+              key={task._id}
               task={task}
               dragSource={{
-                id: task._id,
+                id: task._id!,
                 source: phase,
               }}
             />
