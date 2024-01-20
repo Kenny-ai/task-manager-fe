@@ -5,13 +5,10 @@ import ModalContainer from "@/components/modals/ModalContainer";
 import SidebarContainer from "@/components/SidebarContainer";
 import { useStoreVars } from "@/context/states";
 import Main from "@/components/Main";
-import { useAuth } from "@/hooks/useAuth";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 
 const App = () => {
-  const { logout } = useAuth();
-
   const { boards, setBoards, isLoggedIn, currentBoard } = useStoreVars();
   const { axiosInstance } = useAxios();
 
@@ -21,7 +18,8 @@ const App = () => {
     return res;
   };
 
-  const {error} = useQuery({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useQuery<unknown, { response?: any }>({
     queryKey: ["boards"],
     queryFn: getBoardsFn,
     enabled: isLoggedIn,
@@ -32,7 +30,7 @@ const App = () => {
     console.log({ isLoggedIn });
   }, [isLoggedIn]);
 
-  if (error?.response.status === 403) logout.refetch();
+  // if (error?.response.status === 403) logout.refetch();
 
   useEffect(() => {
     console.log({ boards });

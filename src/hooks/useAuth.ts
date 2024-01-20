@@ -1,8 +1,9 @@
-import { useAxios } from "@/hooks/useAxios";
+import { BASE_URL } from "@/hooks/useAxios";
 import { LoginData, RegisterData } from "../utils/types";
 import { useRouter } from "next13-progressbar";
 import { useStoreVars } from "@/context/states";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -10,7 +11,12 @@ export const useAuth = () => {
   const { setIsLoggedIn, setUserName, setUserId, setBoards, setCurrentBoard } =
     useStoreVars();
 
-  const { axiosAuthInstance } = useAxios();
+  const axiosAuthInstance = axios.create({
+    baseURL: BASE_URL,
+    // timeout: 5000,
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true,
+  });
 
   const loginFn = async (loginData: LoginData) => {
     const res = await axiosAuthInstance.post(`/auth/login`, loginData);

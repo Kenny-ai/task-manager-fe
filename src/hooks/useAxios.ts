@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect } from "react";
-import { useUserStore } from "@/context/store";
 import axios from "axios";
+import { useStoreVars } from "@/context/states";
+import { useAuth } from "./useAuth";
 // export const BASE_URL = `https://kb-task-manager.onrender.com`;
 export const BASE_URL = `http://localhost:8000/api/v1`;
 
@@ -24,10 +26,9 @@ export const BASE_URL = `http://localhost:8000/api/v1`;
 // axiosInstance.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
 export const useAxios = () => {
-  const token = useUserStore((state) => state.token);
-  const setToken = useUserStore((state) => state.setToken);
+  const { token, setToken, isLoggedIn } = useStoreVars();
 
-  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const { logout } = useAuth();
 
   useEffect(() => {
     let cookies: any;
@@ -56,12 +57,18 @@ export const useAxios = () => {
     withCredentials: true,
   });
 
-  const axiosAuthInstance = axios.create({
-    baseURL: BASE_URL,
-    // timeout: 5000,
-    headers: { "Content-Type": "application/json" },
-    withCredentials: true,
-  });
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error.response.status === 403) {
+        logout.refetch();
+        // console.log("");
+      }
+      return Promise.reject(error);
+    }
+  );
 
-  return { axiosInstance, axiosAuthInstance };
+  return { axiosInstance };
 };

@@ -2,6 +2,10 @@
 import { useBoardStore, useModalStore, useUserStore } from "./store";
 
 export const useStoreVars = () => {
+  const token = useUserStore((state) => state.token);
+
+  const setToken = useUserStore((state) => state.setToken);
+
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
 
   const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);
@@ -77,6 +81,8 @@ export const useStoreVars = () => {
   const setIsSidebarOpen = useModalStore((state) => state.setIsSidebarOpen);
 
   return {
+    token,
+    setToken,
     isLoggedIn,
     setIsLoggedIn,
     boards,
