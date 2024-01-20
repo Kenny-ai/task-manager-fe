@@ -26,7 +26,7 @@ const Sidebar = () => {
       <nav
         className={`${
           isSidebarOpen ? `` : `-ml-72`
-        } w-72 h-screen bg-color-white dark:bg-dark-secondary-bg border-r border-light-lines dark:border-dark-light-lines fixed z-10 hidden md:inline-block duration-300 ease-linear`}
+        } w-72 h-screen bg-color-white dark:bg-dark-secondary-bg border-r border-light-lines dark:border-dark-light-lines fixed z-10 hidden md:inline-block duration-200 ease-linear`}
       >
         <div className="h-[6.5rem] flex items-center pl-8">
           <Icon

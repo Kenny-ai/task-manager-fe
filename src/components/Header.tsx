@@ -31,7 +31,7 @@ const Header = () => {
   };
 
   const handleAuthButton = () => {
-    isLoggedIn ? logout.refetch() : goToLoginPage;
+    isLoggedIn ? logout.refetch() : goToLoginPage();
   };
 
   const formatBoardName = () => {
@@ -47,7 +47,7 @@ const Header = () => {
 
   if (!currentBoard) {
     addTaskDisabled = true;
-  } else if (currentBoard.phaseList!.length === 0) {
+  } else if (currentBoard.phaseList?.length === 0) {
     addTaskDisabled = false;
   }
 
@@ -55,7 +55,7 @@ const Header = () => {
     <header
       className={`${
         isSidebarOpen ? `w-full md:w-[calc(100vw-18rem)]` : `w-full`
-      } h-[6.5rem] flex justify-between items-center bg-color-white dark:bg-dark-secondary-bg p-6 border-y border-light-lines dark:border-dark-light-lines fixed duration-300 ease-linear`}
+      } h-[6.5rem] flex justify-between items-center bg-color-white dark:bg-dark-secondary-bg p-6 border-y border-light-lines dark:border-dark-light-lines fixed duration-200 ease-linear`}
     >
       <div className="flex gap-2 items-center">
         <Icon
