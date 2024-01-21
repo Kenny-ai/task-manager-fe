@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect } from "react";
 import axios from "axios";
 import { useStoreVars } from "@/context/states";
 import { useAuth } from "./useAuth";
@@ -30,22 +29,18 @@ export const useAxios = () => {
 
   const { logout } = useAuth();
 
-  useEffect(() => {
-    let cookies: any;
-    if (typeof window === "object" && isLoggedIn) {
-      const cookie = document?.cookie;
-      if (cookie) {
-        cookies = cookie.split(";").reduce((cookies: any, cookie: string) => {
-          const [name, val] = cookie.split("=").map((c) => c.trim());
-          cookies[name as keyof typeof cookies] = val;
-          return cookies;
-        }, {});
-      }
+  let cookies: any;
+  if (typeof window === "object" && isLoggedIn) {
+    const cookie = document?.cookie;
+    if (cookie) {
+      cookies = cookie.split(";").reduce((cookies: any, cookie: string) => {
+        const [name, val] = cookie.split("=").map((c) => c.trim());
+        cookies[name as keyof typeof cookies] = val;
+        return cookies;
+      }, {});
     }
-    setToken(cookies?.payload);
-  }, [isLoggedIn, setToken]);
-
-  // console.log({ AUTH_TOKEN });
+  }
+  setToken(cookies?.payload);
 
   const axiosInstance = axios.create({
     baseURL: BASE_URL,

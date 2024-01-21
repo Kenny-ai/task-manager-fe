@@ -7,9 +7,11 @@ import { useStoreVars } from "@/context/states";
 import Main from "@/components/Main";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
+import Header from "./Header";
 
 const App = () => {
   const { boards, setBoards, isLoggedIn, currentBoard } = useStoreVars();
+
   const { axiosInstance } = useAxios();
 
   const getBoardsFn = async () => {
@@ -42,6 +44,8 @@ const App = () => {
 
   return (
     <div>
+      <Header />
+
       <SidebarContainer />
 
       <Logout />
