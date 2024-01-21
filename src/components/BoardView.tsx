@@ -19,7 +19,7 @@ const BoardView = () => {
   const currentBoardId = currentBoard?._id;
 
   return currentBoard ? (
-    <div className="flex gap-8 p-8 mt-28 w-fit">
+    <div className="flex gap-8 p-8 w-fit">
       <>
         {boards
           .filter((board) => board._id === currentBoardId)[0]
