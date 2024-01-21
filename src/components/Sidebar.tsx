@@ -1,4 +1,3 @@
-import { useTheme } from "next-themes";
 import React from "react";
 import Icon from "./Icon";
 import OpenSidebar from "./OpenSidebar";
@@ -7,7 +6,6 @@ import { useStoreVars } from "@/context/states";
 import { useBoards } from "@/hooks/useBoards";
 
 const Sidebar = () => {
-  const { theme } = useTheme();
 
   const {
     boards,
@@ -26,22 +24,11 @@ const Sidebar = () => {
       <nav
         className={`${
           isSidebarOpen ? `` : `-ml-72`
-        } w-72 h-screen bg-color-white dark:bg-dark-secondary-bg border-r border-light-lines dark:border-dark-light-lines fixed z-10 hidden md:inline-block duration-200 ease-linear`}
+        } w-72 bg-color-white dark:bg-dark-secondary-bg border-r border-light-lines dark:border-dark-light-lines fixed z-10 hidden md:inline-block duration-200 ease-linear h-[calc(100vh-6.5rem)] bottom-0 absolute`}
       >
-        <div className="h-[6.5rem] flex items-center pl-8">
-          <Icon
-            src={`${
-              theme === `light`
-                ? `/assets/logo-dark.svg`
-                : `/assets/logo-light.svg`
-            }`}
-            alt="kanban-logo"
-            priority
-            className=""
-          />
-        </div>
+        
 
-        <div className="text-color-medium-gray h-4/6 pr-8 py-4 shadow dark:shadow-md mb-6 overflow-auto border-t border-light-lines dark:border-dark-light-lines">
+        <div className="text-color-medium-gray h-3/4 pr-8 py-4 shadow dark:shadow-md mb-6 overflow-auto border-t border-light-lines dark:border-dark-light-lines">
           <h5 className="text-sm font-bold tracking-widest mb-6 ml-8">
             ALL BOARDS ({boards?.length})
           </h5>
