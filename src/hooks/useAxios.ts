@@ -1,46 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import axios from "axios";
-import { useStoreVars } from "@/context/states";
 import { useAuth } from "./useAuth";
-// export const BASE_URL = `https://kb-task-manager.onrender.com`;
-export const BASE_URL = `http://localhost:8000/api/v1`;
-
-// export const axiosAuthInstance = axios.create({
-//   baseURL: BASE_URL,
-//   // timeout: 5000,
-//   headers: { "Content-Type": "application/json" },
-//   withCredentials: true,
-// });
-
-// export const axiosInstance = axios.create({
-//   baseURL: BASE_URL,
-//   headers: {
-//     "Content-Type": "application/json",
-//     Authorization: `Bearer ${AUTH_TOKEN}`,
-//   },
-//   withCredentials: true,
-// });
-
-// axiosInstance.defaults.headers.common["Authorization"] = AUTH_TOKEN;
+export const BASE_URL = `https://kb-task-manager.onrender.com/api/v1`;
+// export const BASE_URL = `http://localhost:8000/api/v1`;
 
 export const useAxios = () => {
-  const { token, setToken, isLoggedIn } = useStoreVars();
+  const cookies = document.cookie;
+  const index = cookies?.indexOf("=");
+  const token = cookies?.substring(index + 1);
 
   const { logout } = useAuth();
-
-  let cookies: any;
-  if (typeof window === "object" && isLoggedIn) {
-    const cookie = document?.cookie;
-    if (cookie) {
-      cookies = cookie.split(";").reduce((cookies: any, cookie: string) => {
-        const [name, val] = cookie.split("=").map((c) => c.trim());
-        cookies[name as keyof typeof cookies] = val;
-        return cookies;
-      }, {});
-    }
-  }
-  setToken(cookies?.payload);
 
   const axiosInstance = axios.create({
     baseURL: BASE_URL,
@@ -50,6 +19,7 @@ export const useAxios = () => {
       // Authorization: `Bearer ${"token"}`,
     },
     withCredentials: true,
+    // timeout: 10000,
   });
 
   axiosInstance.interceptors.response.use(
@@ -58,8 +28,7 @@ export const useAxios = () => {
     },
     (error) => {
       if (error.response.status === 403) {
-        logout.refetch();
-        // console.log("");
+        logout();
       }
       return Promise.reject(error);
     }

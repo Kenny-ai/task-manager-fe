@@ -2,18 +2,18 @@ import { BASE_URL } from "@/hooks/useAxios";
 import { LoginData, RegisterData } from "../utils/types";
 import { useRouter } from "next13-progressbar";
 import { useStoreVars } from "@/context/states";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 export const useAuth = () => {
   const router = useRouter();
 
-  const { setIsLoggedIn, setUserName, setUserId, setBoards, setCurrentBoard } =
+  const { setIsLoggedIn, setUserName, setBoards, setCurrentBoard } =
     useStoreVars();
 
   const axiosAuthInstance = axios.create({
     baseURL: BASE_URL,
-    // timeout: 5000,
+    // timeout: 10000,
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
   });
@@ -28,24 +28,22 @@ export const useAuth = () => {
     return res;
   };
 
-  const logoutFn = async () => {
-    const res = await axiosAuthInstance.get(`/auth/logout`);
+  const logout = async () => {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    router.replace("/login");
     setIsLoggedIn(false);
     setUserName("");
-    setUserId("");
     setBoards([]);
     setCurrentBoard(undefined);
-    router.replace("/login");
-    return res;
   };
 
   const login = useMutation({
     mutationKey: ["login"],
     mutationFn: loginFn,
     onSuccess: (data) => {
+      document.cookie = `token=${data.data.token}`;
       setIsLoggedIn(true);
       setUserName(data.data.name);
-      setUserId(data.data.id);
       router.push("/");
     },
   });
@@ -56,16 +54,8 @@ export const useAuth = () => {
     onSuccess: (data) => {
       setIsLoggedIn(true);
       setUserName(data.data.name);
-      setUserId(data.data.id);
       router.push("/");
     },
-  });
-
-  const logout = useQuery({
-    queryKey: ["logout"],
-    queryFn: logoutFn,
-    enabled: false,
-    refetchOnWindowFocus: false,
   });
 
   // const handleLogout = () => {
