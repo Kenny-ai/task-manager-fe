@@ -21,11 +21,11 @@ const Header = () => {
     setIsSidebarOpen,
   } = useStoreVars();
 
+  const [isBoardOpsOpen, setIsBoardOpsOpen] = useState(false);
+
   const handleBoardOpschange = (state: boolean) => {
     setIsBoardOpsOpen(state);
   };
-
-  const [isBoardOpsOpen, setIsBoardOpsOpen] = useState(false);
 
   const router = useRouter();
 
@@ -34,7 +34,7 @@ const Header = () => {
   };
 
   const handleAuthButton = () => {
-    isLoggedIn ? logout.refetch() : goToLoginPage();
+    isLoggedIn ? logout() : goToLoginPage();
   };
 
   const formatBoardName = () => {
@@ -45,6 +45,15 @@ const Header = () => {
     }
     return boardName;
   };
+
+  const authButtonDisplay = () => {
+    if (isLoggedIn) {
+      return `Logout`;
+    } else {
+      return `Login`;
+    }
+  };
+  // console.log(logout.isFetching);
 
   let addTaskDisabled = false;
 
@@ -95,10 +104,10 @@ const Header = () => {
         <div className="flex items-center gap-4">
           {
             <button
-              className={`hidden md:block bg-color-purple hover:bg-color-light-purple px-4 py-2 rounded-xl cursor-pointer duration-200 font-bold text-color-white`}
+              className={`hidden md:grid bg-color-purple hover:bg-color-light-purple w-20 py-2 rounded-xl cursor-pointer duration-200 font-bold text-color-white place-items-center`}
               onClick={handleAuthButton}
             >
-              {`${isLoggedIn ? `Logout` : `Log in`} `}
+              {authButtonDisplay()}
             </button>
           }
 

@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/Icon";
 import Input from "@/components/Input";
 import { useAuth } from "@/hooks/useAuth";
-import { useStoreVars } from "@/context/states";
+import Loading from "./Loading";
 
 const Login = () => {
   const { login, register } = useAuth();
@@ -13,8 +13,6 @@ const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { userName, userId } = useStoreVars();
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,20 +24,28 @@ const Login = () => {
     register.mutate({ name, email, password });
   };
 
-  useEffect(() => {
-    console.log({
-      userName,
-      userId,
-    });
-  }, [userName, userId]);
+  const authButtonDisplay = () => {
+    if (login.isLoading || register.isLoading) {
+      return <Loading />;
+    }
+    if (isMember) {
+      return `Login`;
+    } else {
+      return `Create an account`;
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log({
+  //     userName
+  //   });
+  // }, [userName]);
 
   return (
     <div className="h-screen flex flex-col justify-center items-center gap-4">
       <header>
         <Icon src="/assets/logo-mobile.svg" alt="kanban-logo" />
       </header>
-
-      <span className="">{login.isLoading && `loading...`}</span>
 
       <main className="w-full max-w-[400px] bg-color-white dark:bg-dark-secondary-bg shadow-md rounded-lg p-8">
         <form className="" onSubmit={isMember ? handleLogin : handleRegister}>
@@ -102,10 +108,10 @@ const Login = () => {
             </div>
 
             <button
-              className="bg-color-purple hover:bg-color-light-purple duration-300 text-color-white rounded-lg py-2 mb-6 text-sm font-medium"
+              className="bg-color-purple hover:bg-color-light-purple duration-300 text-color-white rounded-lg py-2 mb-6 text-sm font-medium grid place-items-center"
               type="submit"
             >
-              {!isMember ? `Create an account` : `Login`}
+              {authButtonDisplay()}
             </button>
           </div>
           <p className="text-color-medium-gray font-bold text-sm mb-2">
