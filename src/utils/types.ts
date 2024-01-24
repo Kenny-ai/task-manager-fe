@@ -61,10 +61,6 @@ export interface UserState {
   setIsLoggedIn: (val: boolean) => void;
   userName: string;
   setUserName: (userName: string) => void;
-  userId: string;
-  setUserId: (userId: string) => void;
-  token: string;
-  setToken: (userId: string) => void;
 }
 export interface ThemeState {
   theme: string;

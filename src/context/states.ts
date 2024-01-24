@@ -2,10 +2,6 @@
 import { useBoardStore, useModalStore, useUserStore } from "./store";
 
 export const useStoreVars = () => {
-  const token = useUserStore((state) => state.token);
-
-  const setToken = useUserStore((state) => state.setToken);
-
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
 
   const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);
@@ -37,10 +33,6 @@ export const useStoreVars = () => {
   const userName = useUserStore((state) => state.userName);
 
   const setUserName = useUserStore((state) => state.setUserName);
-
-  const userId = useUserStore((state) => state.userId);
-
-  const setUserId = useUserStore((state) => state.setUserId);
 
   const isAddBoardOpen = useModalStore((state) => state.isAddBoardOpen);
 
@@ -81,8 +73,6 @@ export const useStoreVars = () => {
   const setIsSidebarOpen = useModalStore((state) => state.setIsSidebarOpen);
 
   return {
-    token,
-    setToken,
     isLoggedIn,
     setIsLoggedIn,
     boards,
@@ -93,8 +83,6 @@ export const useStoreVars = () => {
     setCurrentTask,
     userName,
     setUserName,
-    userId,
-    setUserId,
     isAddBoardOpen,
     setIsAddBoardOpen,
     isEditBoardOpen,
