@@ -39,7 +39,7 @@ const BoardView = () => {
       </>
     </div>
   ) : (
-    <div className="flex justify-center items-center h-[calc(100vh-7rem)] w-full mt-28">
+    <div className="flex justify-center items-center h-full w-full">
       <p className="text-color-medium-gray font-bold">
         Click on a board to view its details
       </p>

@@ -7,7 +7,7 @@ const Main = () => {
   const { isSidebarOpen } = useStoreVars();
   return (
     <div
-      className={`h-screen overflow-auto duration-200 ease-linear ${
+      className={`h-[calc(100vh-6.5rem)] overflow-auto duration-200 ease-linear ${
         isSidebarOpen ? `md:ml-72` : ``
       }`}
     >

@@ -6,7 +6,6 @@ import { useStoreVars } from "@/context/states";
 import { useBoards } from "@/hooks/useBoards";
 
 const Sidebar = () => {
-
   const {
     boards,
     setIsAddBoardOpen,
@@ -24,10 +23,8 @@ const Sidebar = () => {
       <nav
         className={`${
           isSidebarOpen ? `` : `-ml-72`
-        } w-72 bg-color-white dark:bg-dark-secondary-bg border-r border-light-lines dark:border-dark-light-lines fixed z-10 hidden md:inline-block duration-200 ease-linear h-[calc(100vh-6.5rem)] bottom-0 absolute`}
+        } w-72 bg-color-white dark:bg-dark-secondary-bg border-r border-light-lines dark:border-dark-light-lines z-10 hidden md:inline-block duration-200 ease-linear h-[calc(100vh-6.5rem)] bottom-0 absolute`}
       >
-        
-
         <div className="text-color-medium-gray h-3/4 pr-8 py-4 shadow dark:shadow-md mb-6 overflow-auto border-t border-light-lines dark:border-dark-light-lines">
           <h5 className="text-sm font-bold tracking-widest mb-6 ml-8">
             ALL BOARDS ({boards?.length})
