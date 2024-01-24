@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Header from "./Header";
 
 const App = () => {
-  const { boards, setBoards, isLoggedIn, currentBoard } = useStoreVars();
+  const { setBoards, isLoggedIn, currentBoard } = useStoreVars();
 
   const { axiosInstance } = useAxios();
 
@@ -28,15 +28,11 @@ const App = () => {
     refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    console.log({ isLoggedIn });
-  }, [isLoggedIn]);
-
   // if (error?.response.status === 403) logout.refetch();
 
-  useEffect(() => {
-    console.log({ boards });
-  }, [boards]);
+  // useEffect(() => {
+  //   console.log({ boards });
+  // }, [boards]);
 
   useEffect(() => {
     console.log({ currentBoard });
