@@ -1,6 +1,6 @@
 "use client";
 import Logout from "@/components/Logout";
-import React, { useEffect } from "react";
+import React from "react";
 import ModalContainer from "@/components/modals/ModalContainer";
 import SidebarContainer from "@/components/SidebarContainer";
 import { useStoreVars } from "@/context/states";
@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Header from "./Header";
 
 const App = () => {
-  const { setBoards, isLoggedIn, currentBoard } = useStoreVars();
+  const { setBoards, isLoggedIn } = useStoreVars();
 
   const { axiosInstance } = useAxios();
 
@@ -34,9 +34,9 @@ const App = () => {
   //   console.log({ boards });
   // }, [boards]);
 
-  useEffect(() => {
-    console.log({ currentBoard });
-  }, [currentBoard]);
+  // useEffect(() => {
+  //   console.log({ currentBoard });
+  // }, [currentBoard]);
 
   return (
     <div>
