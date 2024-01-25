@@ -34,7 +34,7 @@ const AddBoard = forwardRef<Ref>(function AddBoard(props, ref) {
       createBoard.mutate({ name, phaseList: phases });
       // console.log({ name, phases });
     } else {
-      if (!checkDuplicateBoardName(name)) {
+      if (!checkDuplicateBoardName(name, false)) {
         const _id = crypto.randomUUID();
         createLocalBoard({ _id, name, phaseList });
         setIsAddBoardOpen(false);

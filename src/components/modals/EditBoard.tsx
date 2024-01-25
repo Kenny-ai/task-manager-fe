@@ -40,9 +40,8 @@ const EditBoard = forwardRef<Ref, Props>(function AddBoard(props, ref) {
 
       console.log({ name, phases });
     } else {
-      if (!checkDuplicateBoardName(name)) {
+      if (!checkDuplicateBoardName(name, true)) {
         updateLocalBoard({ name, phaseList });
-        // setBoards(newBoards);
         setIsEditBoardOpen(false);
       } else {
         setError(`${name} already exists. Please choose another name!`);
