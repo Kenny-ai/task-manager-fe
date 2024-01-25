@@ -249,46 +249,15 @@ export const useBoards = () => {
   const numberOfCompleted = (task: Task) =>
     task.subtasks?.filter((subtask) => subtask.isCompleted).length;
 
-  const dragResolver = ({
-    id,
-    source,
-    destination,
-  }: {
-    id: string;
-    source: string;
-    destination: string;
-  }) => {
-    if (source !== destination) {
-      const array = boards.map((board) => {
-        if (board._id === boardId) {
-          board.tasks?.map((task) => {
-            if (task._id === id) {
-              task.status = destination;
-            }
-            return task;
-          });
-        }
-        return board;
-      });
-      setBoards(array);
-
-      if (isLoggedIn) {
-        currentBoard!.tasks!.map((task) => {
-          if (task._id === id) {
-            task.status = destination;
-          }
-          return task;
-        });
-
-        updateBoard.mutate(currentBoard!);
-      }
-
-      return array;
+  const checkDuplicateBoardName = (name: string, update: boolean) => {
+    let names: string[];
+    if (update) {
+      names = boards
+        .map((board) => board.name)
+        .filter((name) => name !== currentBoard?.name);
+    } else {
+      names = boards.map((board) => board.name);
     }
-  };
-
-  const checkDuplicateBoardName = (name: string) => {
-    const names = boards.map((board) => board.name);
     return names.includes(name);
   };
 
@@ -308,7 +277,6 @@ export const useBoards = () => {
     toggleSubtaskCompleted,
     changeTaskStatus,
     numberOfCompleted,
-    dragResolver,
     checkDuplicateBoardName,
   };
 };
