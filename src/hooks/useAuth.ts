@@ -28,7 +28,7 @@ export const useAuth = () => {
     return res;
   };
 
-  const logout = async () => {
+  const logout = () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.replace("/login");
     setIsLoggedIn(false);
