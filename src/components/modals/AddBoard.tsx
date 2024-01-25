@@ -9,6 +9,7 @@ import { PhaseType } from "@/utils/types";
 import Icon from "../Icon";
 import ModalLayout from "./ModalLayout";
 import { useStoreVars } from "@/context/states";
+import { toast } from "react-toastify";
 
 type Ref = HTMLDivElement;
 
@@ -38,6 +39,7 @@ const AddBoard = forwardRef<Ref>(function AddBoard(props, ref) {
         const _id = crypto.randomUUID();
         createLocalBoard({ _id, name, phaseList });
         setIsAddBoardOpen(false);
+        toast.success("Board created");
       } else {
         setError(`${name} already exists. Please choose another name!`);
 

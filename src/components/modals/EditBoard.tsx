@@ -8,6 +8,7 @@ import { PhaseType } from "@/utils/types";
 import Icon from "../Icon";
 import { useStoreVars } from "@/context/states";
 import ModalLayout from "./ModalLayout";
+import { toast } from "react-toastify";
 
 type Ref = HTMLDivElement;
 interface Props {
@@ -43,6 +44,7 @@ const EditBoard = forwardRef<Ref, Props>(function AddBoard(props, ref) {
       if (!checkDuplicateBoardName(name, true)) {
         updateLocalBoard({ name, phaseList });
         setIsEditBoardOpen(false);
+        toast.success("Board updated");
       } else {
         setError(`${name} already exists. Please choose another name!`);
 

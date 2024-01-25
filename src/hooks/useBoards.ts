@@ -9,6 +9,7 @@ import {
 } from "@/utils/types";
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const useBoards = () => {
   const queryClient = useQueryClient();
@@ -44,6 +45,10 @@ export const useBoards = () => {
     mutationFn: createBoardFn,
     onSuccess: () => {
       setIsAddBoardOpen(false);
+      toast.success("Board created");
+    },
+    onError: () => {
+      toast.error("An error occured");
     },
     onSettled: async () => {
       return await queryClient.invalidateQueries({ queryKey: ["boards"] });
@@ -65,7 +70,10 @@ export const useBoards = () => {
       queryClient.invalidateQueries({ queryKey: ["boards"] });
       setCurrentBoard(data.data.board);
       setIsEditBoardOpen(false);
-      console.log(data.data);
+      toast.success("Board updated");
+    },
+    onError: () => {
+      toast.error("An error occured");
     },
   });
 
@@ -81,6 +89,10 @@ export const useBoards = () => {
       queryClient.invalidateQueries({ queryKey: ["boards"] });
       setCurrentBoard(undefined);
       setIsDeleteBoardOpen(false);
+      toast.success("Board deleted");
+    },
+    onError: () => {
+      toast.error("An error occured");
     },
   });
 
@@ -97,6 +109,10 @@ export const useBoards = () => {
     mutationFn: createTaskFn,
     onSuccess: () => {
       setIsAddTaskOpen(false);
+      toast.success("Task created");
+    },
+    onError: () => {
+      toast.error("An error occured");
     },
     onSettled: async () => {
       return await queryClient.invalidateQueries({ queryKey: ["boards"] });
@@ -132,6 +148,10 @@ export const useBoards = () => {
     onSuccess: () => {
       setIsEditTaskOpen(false);
       setIsTileDetailsOpen(false);
+      toast.success("Task updated");
+    },
+    onError: () => {
+      toast.error("An error occured");
     },
     onSettled: async () => {
       return await queryClient.invalidateQueries({ queryKey: ["boards"] });
@@ -169,6 +189,10 @@ export const useBoards = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["boards"] });
       setIsDeleteTaskOpen(false);
+      toast.success("Task deleted");
+    },
+    onError: () => {
+      toast.error("An error occured");
     },
   });
 

@@ -2,6 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import Providers from "../providers/Providers";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const plusjakartasans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -20,7 +22,10 @@ export default function RootLayout({
       <body
         className={`${plusjakartasans.className} bg-light-main-bg dark:bg-dark-main-bg`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <ToastContainer bodyClassName="toast" autoClose={3000} />
+          {children}
+        </Providers>
       </body>
     </html>
   );

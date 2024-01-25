@@ -2,6 +2,7 @@ import { useBoards } from "@/hooks/useBoards";
 import { useStoreVars } from "@/context/states";
 import React, { forwardRef } from "react";
 import Loading from "../Loading";
+import { toast } from "react-toastify";
 
 type Ref = HTMLFormElement;
 interface Props {
@@ -21,7 +22,7 @@ const Delete = forwardRef<Ref, Props>(function Delete({ type, ...props }, ref) {
 
   const { deleteLocalBoard, deleteLocalTask, deleteBoard, deleteTask } =
     useBoards();
-  
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isLoggedIn) {
@@ -34,10 +35,12 @@ const Delete = forwardRef<Ref, Props>(function Delete({ type, ...props }, ref) {
       if (type === "Board") {
         deleteLocalBoard();
         setIsDeleteBoardOpen(false);
+        toast.success("Board deleted");
       } else {
         const newBoards = deleteLocalTask();
         setBoards(newBoards);
         setIsDeleteTaskOpen(false);
+        toast.success("Task deleted");
       }
     }
   };
@@ -65,7 +68,7 @@ const Delete = forwardRef<Ref, Props>(function Delete({ type, ...props }, ref) {
         ) : (
           <p className="text-sm text-color-medium-gray leading-6">
             Are you sure you want to delete the ‘{currentTask.title}’ {type}?
-            This action will remove all columns and tasks and cannot be
+            This action will remove this task and cannot be
             reversed.
           </p>
         )}

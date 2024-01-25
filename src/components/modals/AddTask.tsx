@@ -9,6 +9,7 @@ import Icon from "../Icon";
 import { useStoreVars } from "@/context/states";
 import { initialSubtask } from "@/utils/constants";
 import Loading from "../Loading";
+import { toast } from "react-toastify";
 
 type Ref = HTMLDivElement;
 
@@ -54,6 +55,7 @@ const AddTask = forwardRef<Ref>(function AddTask(props, ref) {
       setBoards(newBoards);
 
       setIsAddTaskOpen(false);
+      toast.success("Task created");
     }
   };
 

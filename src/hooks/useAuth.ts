@@ -4,6 +4,7 @@ import { useRouter } from "next13-progressbar";
 import { useStoreVars } from "@/context/states";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ export const useAuth = () => {
 
   const axiosAuthInstance = axios.create({
     baseURL: BASE_URL,
-    // timeout: 10000,
+    timeout: 20000,
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
   });
@@ -44,7 +45,11 @@ export const useAuth = () => {
       document.cookie = `token=${data.data.token}`;
       setIsLoggedIn(true);
       setUserName(data.data.name);
+      toast.success("Log in successful");
       router.push("/");
+    },
+    onError: () => {
+      toast.error("An error occured");
     },
   });
 

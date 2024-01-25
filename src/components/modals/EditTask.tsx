@@ -8,6 +8,7 @@ import Dropdown from "../Dropdown";
 import { useStoreVars } from "@/context/states";
 import Icon from "../Icon";
 import Loading from "../Loading";
+import { toast } from "react-toastify";
 
 type Ref = HTMLDivElement;
 
@@ -49,6 +50,7 @@ const EditTask = forwardRef<Ref>(function AddTask(props, ref) {
       setBoards(newBoards);
 
       setIsEditTaskOpen(false);
+      toast.success("Task updated");
     }
   };
 
