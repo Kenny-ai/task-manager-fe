@@ -8,6 +8,7 @@ import Main from "@/components/Main";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import Header from "./Header";
+import { toast } from "react-toastify";
 
 const App = () => {
   const { setBoards, isLoggedIn } = useStoreVars();
@@ -20,15 +21,16 @@ const App = () => {
     return res;
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useQuery<unknown, { response?: any }>({
+  const { data, error } = useQuery({
     queryKey: ["boards"],
     queryFn: getBoardsFn,
     enabled: isLoggedIn,
     refetchOnWindowFocus: false,
   });
 
-  // if (error?.response.status === 403) logout.refetch();
+  if (data) toast.success("Boards loaded successfully");
+
+  if (error) toast.error("An error occured loading your boards");
 
   // useEffect(() => {
   //   console.log({ boards });
