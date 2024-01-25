@@ -75,40 +75,6 @@ body {
     brightness(103%) contrast(87%);
 }
 
-/**
-  * Color wheel
-  *
-  * @author jh3y - jheytompkins.com
-*/
-/* .color-wheel:before {
-  -webkit-animation: spin 1s infinite linear;
-  animation: spin 1s infinite linear;
-  content: "";
-  display: block;
-  height: 10px;
-  width: 10px;
-  border-width: 10px;
-  border-style: solid;
-  border-left-color: #fff;
-  border-bottom-color: #726edb;
-  border-radius: 100%;
-  border-right-color: #fff;
-  border-top-color: #726edb;
-}
-
-@-webkit-keyframes spin {
-  to {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes spin {
-  to {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-} */
 .loading:before {
   content: "";
   display: block;
