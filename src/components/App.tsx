@@ -21,14 +21,14 @@ const App = () => {
     return res;
   };
 
-  const { data, error } = useQuery({
+  const { error } = useQuery({
     queryKey: ["boards"],
     queryFn: getBoardsFn,
     enabled: isLoggedIn,
     refetchOnWindowFocus: false,
   });
 
-  if (data) toast.success("Boards loaded successfully");
+  // if (data) toast.success("Boards loaded successfully");
 
   if (error) toast.error("An error occured loading your boards");
 
