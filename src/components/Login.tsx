@@ -126,7 +126,7 @@ const Login = () => {
             </span>
           </p>{" "}
           <Link
-            href="/"
+            href={`/?from=login`}
             className="font-bold text-sm text-color-purple hover:text-purple-500 duration-150 hover:underline cursor-pointer"
           >
             Or access the app without login or sign up

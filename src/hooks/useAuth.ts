@@ -46,7 +46,7 @@ export const useAuth = () => {
       setIsLoggedIn(true);
       setUserName(data.data.name);
       toast.success("Log in successful");
-      router.push("/");
+      router.replace("/?from=login");
     },
     onError: () => {
       toast.error("An error occured");

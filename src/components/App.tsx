@@ -1,6 +1,6 @@
 "use client";
 import Logout from "@/components/Logout";
-import React from "react";
+import React, { useEffect } from "react";
 import ModalContainer from "@/components/modals/ModalContainer";
 import SidebarContainer from "@/components/SidebarContainer";
 import { useStoreVars } from "@/context/states";
@@ -9,8 +9,17 @@ import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import Header from "./Header";
 import { toast } from "react-toastify";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const App = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const previous = searchParams.get("from");
+
+  useEffect(() => {
+    if (previous !== "login") router.push("/login");
+  }, [previous, router]);
+
   const { setBoards, isLoggedIn } = useStoreVars();
 
   const { axiosInstance } = useAxios();
