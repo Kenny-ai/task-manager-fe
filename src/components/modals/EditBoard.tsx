@@ -39,7 +39,7 @@ const EditBoard = forwardRef<Ref, Props>(function AddBoard(props, ref) {
 
       updateBoard.mutate({ name, phaseList: phases });
 
-      console.log({ name, phases });
+      // console.log({ name, phases });
     } else {
       if (!checkDuplicateBoardName(name, true)) {
         updateLocalBoard({ name, phaseList });
