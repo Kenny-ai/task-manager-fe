@@ -14,7 +14,7 @@ export const useAuth = () => {
 
   const axiosAuthInstance = axios.create({
     baseURL: BASE_URL,
-    timeout: 20000,
+    // timeout: 20000,
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
   });

@@ -19,7 +19,7 @@ export const useAxios = () => {
       // Authorization: `Bearer ${"token"}`,
     },
     withCredentials: true,
-    timeout: 20000,
+    // timeout: 20000,
   });
 
   axiosInstance.interceptors.response.use(
