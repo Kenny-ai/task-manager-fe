@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 export const useAuth = () => {
   const router = useRouter();
 
-  const { setIsLoggedIn, setUserName, setBoards, setCurrentBoard } =
+  const { setIsLoggedIn, setUserName, setBoards, setCurrentBoard, setToken } =
     useStoreVars();
 
   const axiosAuthInstance = axios.create({
@@ -42,11 +42,12 @@ export const useAuth = () => {
     mutationKey: ["login"],
     mutationFn: loginFn,
     onSuccess: (data) => {
-      document.cookie = `token=${data.data.token}`;
+      // document.cookie = `token=${data.data.token}`;
+      setToken(data.data.token);
       setIsLoggedIn(true);
       setUserName(data.data.name);
       toast.success("Log in successful");
-      router.replace("/?from=login");
+      router.push("/?from=login");
     },
     onError: () => {
       toast.error("An error occured");
@@ -59,7 +60,7 @@ export const useAuth = () => {
     onSuccess: (data) => {
       setIsLoggedIn(true);
       setUserName(data.data.name);
-      router.push("/");
+      router.push("/?from=login");
     },
   });
 

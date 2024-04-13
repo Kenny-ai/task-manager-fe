@@ -66,6 +66,10 @@ export const useUserStore = create<UserState>()(
       userName: "",
 
       setUserName: (userName: string) => set(() => ({ userName })),
+
+      token: "",
+
+      setToken: (token: string) => set(() => ({ token })),
     }),
     { name: "user-data" }
   )

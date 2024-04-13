@@ -34,6 +34,10 @@ export const useStoreVars = () => {
 
   const setUserName = useUserStore((state) => state.setUserName);
 
+  const token = useUserStore((state) => state.token);
+
+  const setToken = useUserStore((state) => state.setToken);
+
   const isAddBoardOpen = useModalStore((state) => state.isAddBoardOpen);
 
   const setIsAddBoardOpen = useModalStore((state) => state.setIsAddBoardOpen);
@@ -83,6 +87,8 @@ export const useStoreVars = () => {
     setCurrentTask,
     userName,
     setUserName,
+    token,
+    setToken,
     isAddBoardOpen,
     setIsAddBoardOpen,
     isEditBoardOpen,
