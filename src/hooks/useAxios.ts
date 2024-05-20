@@ -6,10 +6,6 @@ import { useStoreVars } from "@/context/states";
 export const BASE_URL = `http://localhost:8000/api/v1`;
 
 export const useAxios = () => {
-  // const cookies = document.cookie;
-  // const index = cookies?.indexOf("=");
-  // const token = cookies?.substring(index + 1);
-
   const { logout } = useAuth();
 
   const { token } = useStoreVars();
@@ -19,7 +15,6 @@ export const useAxios = () => {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      // Authorization: `Bearer ${"token"}`,
     },
     withCredentials: true,
     // timeout: 20000,
