@@ -2,8 +2,8 @@
 import axios from "axios";
 import { useAuth } from "./useAuth";
 import { useStoreVars } from "@/context/states";
-// export const BASE_URL = `https://kb-task-manager.onrender.com/api/v1`;
-export const BASE_URL = `http://localhost:8000/api/v1`;
+export const BASE_URL = `https://kb-task-manager.onrender.com/api/v1`;
+// export const BASE_URL = `http://localhost:8000/api/v1`;
 
 export const useAxios = () => {
   const { logout } = useAuth();
